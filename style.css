@@ -73,6 +73,40 @@ body {
     color: var(--primary);
 }
 
+/* === TAMBAHAN: TOMBOL GANTI BAHASA === */
+.language-switch {
+    display: flex;
+    gap: 0.3rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.25rem;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+}
+
+.lang-btn {
+    background: transparent;
+    color: #ccc;
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-size: 0.8rem;
+}
+
+.lang-btn.active {
+    background: var(--primary);
+    color: var(--dark);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.lang-btn:hover:not(.active) {
+    color: var(--primary);
+    border: 1px solid var(--primary);
+}
+
 .menu-toggle {
     display: none;
     font-size: 1.5rem;
@@ -488,6 +522,10 @@ footer i {
     
     .section-title {
         font-size: 1.6rem;
+    }
+
+    .language-switch {
+        margin-right: 2.5rem;
     }
 }
 
