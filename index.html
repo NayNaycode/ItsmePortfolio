@@ -16,12 +16,19 @@
                 <i class="fas fa-code-branch"></i> MY PORTFOLIO
             </div>
             <ul class="nav-links">
-                <li><a href="#beranda">Home</a></li>
-                <li><a href="#tentang">About Me</a></li>
-                <li><a href="#portfolio">Portfolio</a></li>
-                <li><a href="#sertifikat">Certificates</a></li>
-                <li><a href="#kontak">Contact</a></li>
+                <li><a href="#beranda" data-i18n="nav_home">Home</a></li>
+                <li><a href="#tentang" data-i18n="nav_about">About Me</a></li>
+                <li><a href="#portfolio" data-i18n="nav_portfolio">Portfolio</a></li>
+                <li><a href="#sertifikat" data-i18n="nav_certificates">Certificates</a></li>
+                <li><a href="#kontak" data-i18n="nav_contact">Contact</a></li>
             </ul>
+            
+            <!-- TOMBOL GANTI BAHASA -->
+            <div class="language-switch">
+                <button class="lang-btn active" data-lang="id">ID</button>
+                <button class="lang-btn" data-lang="en">EN</button>
+            </div>
+
             <div class="menu-toggle">
                 <i class="fas fa-bars"></i>
             </div>
@@ -38,11 +45,11 @@
                             <img src="images/profesional photo.png" alt="Foto Profil">
                         </div>
                     </div>
-                    <h1>Halo, Saya <span class="highlight">Sri Mulyani</span></h1>
-                    <p class="subtitle">I'm a <span class="typing-text">UI/UX Designer</span></p>
+                    <h1 data-i18n="hero_greeting">Halo, Saya <span class="highlight">Sri Mulyani</span></h1>
+                    <p class="subtitle"><span data-i18n="hero_intro">Saya Seorang</span> <span class="typing-text">UI/UX Designer</span></p>
                     
                     <div class="tools-section">
-                        <h3>Skills & Tools</h3>
+                        <h3 data-i18n="skills_title">Skills & Tools</h3>
                         <div class="tools-grid">
                             <span><i class="fab fa-html5"></i> HTML</span>
                             <span><i class="fab fa-css3-alt"></i> CSS</span>
@@ -65,13 +72,13 @@
         <!-- SECTION TENTANG SAYA -->
         <section id="tentang" class="tentang">
             <div class="container">
-                <h2 class="section-title">About <span>Me</span></h2>
+                <h2 class="section-title" data-i18n="about_title">Tentang <span>Saya</span></h2>
                 <div class="tentang-wrapper">
                     <div class="tentang-gambar">
                         <img src="images/unformal.jpeg" alt="Foto Diri">
                     </div>
                     <div class="tentang-bio">
-                        <p>
+                        <p data-i18n="about_p1">
                             Saya merupakan lulusan Teknik Informatika dari Institut Teknologi Indonesia dengan IPK 3,54. 
                             Selama perkuliahan, saya aktif mengembangkan kemampuan melalui berbagai proyek, termasuk pengembangan 
                             web untuk Dinas Kepariwisataan sebagai tugas akhir. Saya memiliki keterampilan dalam desain UI/UX, pengolahan data, 
@@ -79,15 +86,15 @@
                             memiliki kemampuan problem solving, manajemen waktu, dan komunikasi yang baik. Saya adalah pribadi yang disiplin, teliti, 
                             adaptif, serta mampu bekerja secara mandiri maupun dalam tim untuk memberikan kontribusi secara profesional di dunia kerja.
                         </p>
-                        <p>
+                        <p data-i18n="about_p2">
                             Saya selalu ingin belajar hal baru dan siap bekerja sama untuk menyelesaikan project-project 
                             yang menantang. Fokus saya adalah menciptakan solusi digital yang efektif dan estetik.
                         </p>
                         <a href="CV Sri Mulyani.pdf" class="btn-download" download>
-                            <i class="fas fa-download"></i> Download CV (ID)
+                            <i class="fas fa-download"></i> <span data-i18n="btn_cv_id">Download CV (ID)</span>
                         </a>
                         <a href="CV Sri Mulyani - English Version.pdf" class="btn-download" download>
-                            <i class="fas fa-download"></i> Download CV (EN)
+                            <i class="fas fa-download"></i> <span data-i18n="btn_cv_en">Download CV (EN)</span>
                         </a>
                     </div>
                 </div>
@@ -97,69 +104,69 @@
         <!-- SECTION PORTFOLIO -->
         <section id="portfolio" class="portfolio">
             <div class="container">
-                <h2 class="section-title">My <span>Work</span></h2>
+                <h2 class="section-title" data-i18n="portfolio_title">Hasil <span>Karya</span></h2>
                 <div class="portfolio-grid">
                     <div class="work-card">
                         <img src="images/Thumbnail.png" alt="Project 1">
                         <div class="work-info">
                             <h4>Mobile App UI</h4>
-                            <p>App Design Platform</p>
+                            <p data-i18n="proj1_desc">Desain Aplikasi Platform</p>
                         </div>
                     </div>
                     <div class="work-card">
                         <img src="images/Thumbnail1.png" alt="Project 2">
                         <div class="work-info">
                             <h4>Mobile App UI</h4>
-                            <p>App Design Tudo List</p>
+                            <p data-i18n="proj2_desc">Desain Aplikasi Tudo List</p>
                         </div>
                     </div>
                     <div class="work-card">
                         <img src="images/Thumbnail2.png" alt="Project 3">
                         <div class="work-info">
                             <h4>Mobile App UI</h4>
-                            <p>App Design Platform Course</p>
+                            <p data-i18n="proj3_desc">Desain Aplikasi Platform Kursus</p>
                         </div>
                     </div>
                     <div class="work-card">
                         <img src="images/Thumbnail3.png" alt="Project 4">
                         <div class="work-info">
                             <h4>Mobile App UI</h4>
-                            <p>App Design Top Up Game</p>
+                            <p data-i18n="proj4_desc">Desain Aplikasi Top Up Game</p>
                         </div>
                     </div>
                     <div class="work-card">
                         <img src="images/Thumbnail5.png" alt="Project 5">
                         <div class="work-info">
                             <h4>Mobile App UI</h4>
-                            <p>App Design Platform E-commerce Coffe</p>
+                            <p data-i18n="proj5_desc">Desain Aplikasi E-commerce Kopi</p>
                         </div>
                     </div>
                     <div class="work-card">
                         <img src="images/Thumbnail4.png" alt="Project 6">
                         <div class="work-info">
                             <h4>Web UI</h4>
-                            <p>Web Design</p>
+                            <p data-i18n="proj6_desc">Desain Tampilan Web</p>
                         </div>
                     </div>
                      <div class="work-card">
                         <img src="images/poster.png" alt="Project">
                         <div class="work-info">
                             <h4>Poster</h4>
-                            <p>Poster untuk promosi aplikasi</p>
+                            <p data-i18n="proj7_desc">Poster promosi aplikasi</p>
                         </div>
                     </div>
                      <div class="work-card">
                         <img src="images/Moodboard Design.png" alt="Project">
                         <div class="work-info">
                             <h4>Moodboard</h4>
-                            <p>Konsep untuk pembuatan aplikasi</p>
+                            <p data-i18n="proj8_desc">Konsep perancangan aplikasi</p>
                         </div>
                     </div>
                     <div class="work-card">
                         <img src="images/Flyer Makanan.png" alt="Project">
                         <div class="work-info">
-                            <h4>Flyer Makananan</h4>
-                            <p>Pembuatan Flyer makanan sebagai bentuk promosi</p>
+                            <h4 data-i18n="proj9_title">Flyer Makanan</h4>
+                            <p data-i18n="proj9_desc">Promosi produk kuliner</p>
                         </div>
                     </div>
             </div>
@@ -168,7 +175,7 @@
         <!-- SECTION SERTIFIKAT -->
         <section id="sertifikat" class="sertifikat">
             <div class="container">
-                <h2 class="section-title">Certificates </span></h2>
+                <h2 class="section-title" data-i18n="cert_title">Sertifikat </span></h2>
                 <div class="sertifikat-slider">
                 <div class="cert-item">
                     <img src="Sertifikat/Sertifikat Internasional.jpg" alt="Sertifikat">
@@ -187,14 +194,14 @@
                 <div class="cert-item">
                     <img src="Sertifikat/DESIGN GRAFIS.jpg" alt="Sertifikat">
                     <div class="cert-info">
-                        <h4>Design Grafis</h4>
+                        <h4 data-i18n="cert_graphic">Desain Grafis</h4>
                         <p>Skill Academic By Ruangguru 2024</p>
                     </div>
                 </div>
                 <div class="cert-item"> 
                     <img src="Sertifikat/SERTIFIKAT DATA SCIENCE.jpg" alt="Sertifikat">
                     <div class="cert-info">
-                        <h4>Data Science</h4>
+                        <h4 data-i18n="cert_datascience">Ilmu Data</h4>
                         <p>Kickstart Data Science Journey by Rakamin 2022</p>
                     </div>
                 </div>
@@ -239,7 +246,7 @@
         <!-- SECTION KONTAK -->
         <section id="kontak" class="kontak">
             <div class="container">
-                <h2 class="section-title">Contact <span>Me</span></h2>
+                <h2 class="section-title" data-i18n="contact_title">Hubungi <span>Saya</span></h2>
                 <div class="kontak-box">
                     <div class="kontak-foto">
                         <img src="images/Unformal me.jpeg" alt="Foto">
@@ -262,7 +269,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2026 Designed with <i class="fas fa-heart"></i> Open To Work</p>
+        <p>&copy; 2026 Designed with <i class="fas fa-heart"></i> <span data-i18n="footer_text">Terbuka Untuk Bekerja</span></p>
     </footer>
 
     <script src="script.js"></script>
