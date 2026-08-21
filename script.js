@@ -1,233 +1,632 @@
-// ===== BAGIAN: ANIMASI PARTIKEL LATAR BELAKANG =====
-const canvas = document.createElement('canvas');
-const ctx = canvas.getContext('2d');
-canvas.id = 'canvas';
-document.body.appendChild(canvas);
+@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
-let width, height;
-let particles = [];
-
-function resize() {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-}
-window.addEventListener('resize', resize);
-resize();
-
-class Particle {
-    constructor() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.radius = Math.random() * 2 + 1;
-        this.alpha = Math.random() * 0.5 + 0.2;
-        this.color = Math.random() > 0.5 ? '255, 255, 255' : '200, 200, 200';
-    }
-    draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${this.color}, ${this.alpha})`;
-        ctx.fill();
-    }
-    update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        if(this.x < 0 || this.x > width) this.vx *= -1;
-        if(this.y < 0 || this.y > height) this.vy *= -1;
-    }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
 }
 
-for(let i = 0; i < 120; i++){
-    particles.push(new Particle());
+:root {
+    --primary: #ffffff; /* PUTIH TULEN */
+    --secondary: #1a1a1a; /* ABU GELAP */
+    --dark: #000000; /* HITAM MURNI */
+    --gray: #888888;
+    --border: rgba(255,255,255,0.1);
 }
 
-function animateParticles(){
-    ctx.clearRect(0, 0, width, height);
-    particles.forEach(p => {
-        p.update();
-        p.draw();
-    });
-    requestAnimationFrame(animateParticles);
-}
-animateParticles();
-
-// ===== BAGIAN: MENU TOGGLE (UNTUK HP) =====
-const menuToggle = document.querySelector('.menu-toggle');
-const navLinks = document.querySelector('.nav-links');
-
-menuToggle.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-    const icon = menuToggle.querySelector('i');
-    icon.classList.toggle('fa-times');
-    icon.classList.toggle('fa-bars');
-});
-
-// ===== BAGIAN: ANIMASI SCROLL MUNCUL =====
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: "0px 0px -100px 0px"
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if(entry.isIntersecting){
-            entry.target.classList.add('show');
-        }
-    });
-}, observerOptions);
-
-const hiddenElements = document.querySelectorAll('.work-card, .tentang-wrapper, .cert-item');
-hiddenElements.forEach(el => {
-    el.classList.add('hide');
-    observer.observe(el);
-});
-
-// ===== BAGIAN: EFEK SCROLL PADA NAVBAR =====
-window.addEventListener('scroll', () => {
-    const navbar = document.querySelector('.navbar');
-    if(window.scrollY > 50){
-        navbar.style.background = 'rgba(3, 7, 18, 0.95)';
-    } else {
-        navbar.style.background = 'rgba(3, 7, 18, 0.9)';
-    }
-});
-
-// ===== BAGIAN: TEKS BERJALAN (TYPING EFFECT) =====
-const texts = ['UI/UX Designer', 'Graphic Designer', 'Admin', 'Customer Service', 'Pretty Girl🫰🏻'];
-let count = 0;
-let index = 0;
-let currentText = '';
-let letter = '';
-
-(function type(){
-    if(count === texts.length){
-        count = 0;
-    }
-    currentText = texts[count];
-    letter = currentText.slice(0, ++index);
-
-    document.querySelector('.typing-text').textContent = letter;
-    if(letter.length === currentText.length){
-        count++;
-        index = 0;
-        setTimeout(type, 2000);
-    } else {
-        setTimeout(type, 100);
-    }
-})();
-
-// ==================================================
-// ✨ PERBAIKAN AKHIR: FITUR GANTI BAHASA ✨
-// ==================================================
-
-// 1. DATA TERJEMAHAN (LENGKAP & BENER)
-const translations = {
-    id: {
-        nav_home: "Beranda",
-        nav_about: "Tentang Saya",
-        nav_portfolio: "Portofolio",
-        nav_certificates: "Sertifikat",
-        nav_contact: "Kontak",
-        hero_greeting: "Halo, Saya <span class='highlight'>Sri Mulyani</span>",
-        hero_intro: "Saya Seorang",
-        skills_title: "Keahlian & Alat",
-        about_title: "Tentang <span>Saya</span>",
-        about_p1: "Saya merupakan lulusan Teknik Informatika dari Institut Teknologi Indonesia dengan IPK 3,54. Selama perkuliahan, saya aktif mengembangkan kemampuan melalui berbagai proyek, termasuk pengembangan web untuk Dinas Kepariwisataan sebagai tugas akhir. Saya memiliki keterampilan dalam desain UI/UX, pengolahan data, serta pengelolaan administrasi dan dokumen. Selain itu, saya juga terbiasa bekerja secara terstruktur dan detail, serta memiliki kemampuan problem solving, manajemen waktu, dan komunikasi yang baik. Saya adalah pribadi yang disiplin, teliti, adaptif, serta mampu bekerja secara mandiri maupun dalam tim untuk memberikan kontribusi secara profesional di dunia kerja.",
-        about_p2: "Saya selalu ingin belajar hal baru dan siap bekerja sama untuk menyelesaikan project-project yang menantang. Fokus saya adalah menciptakan solusi digital yang efektif dan estetik.",
-        btn_cv_id: "Download CV (ID)",
-        btn_cv_en: "Download CV (EN)",
-        portfolio_title: "Hasil <span>Karya</span>",
-        proj1_desc: "Desain Aplikasi Platform",
-        proj2_desc: "Desain Aplikasi Tudo List",
-        proj3_desc: "Desain Aplikasi Platform Kursus",
-        proj4_desc: "Desain Aplikasi Top Up Game",
-        proj5_desc: "Desain Aplikasi E-commerce Kopi",
-        proj6_desc: "Desain Tampilan Web",
-        proj7_desc: "Poster promosi aplikasi",
-        proj8_desc: "Konsep perancangan aplikasi",
-        proj9_title: "Flyer Makanan",
-        proj9_desc: "Promosi produk kuliner",
-        cert_title: "Sertifikat",
-        cert_graphic: "Desain Grafis",
-        cert_datascience: "Ilmu Data",
-        contact_title: "Hubungi <span>Saya</span>",
-        footer_text: "Terbuka Untuk Bekerja"
-    },
-    en: {
-        nav_home: "Home",
-        nav_about: "About Me",
-        nav_portfolio: "Portfolio",
-        nav_certificates: "Certificates",
-        nav_contact: "Contact",
-        hero_greeting: "Hello, I'm <span class='highlight'>Sri Mulyani</span>",
-        hero_intro: "I am a",
-        skills_title: "Skills & Tools",
-        about_title: "About <span>Me</span>",
-        about_p1: "I am a graduate of Informatics Engineering from the Institut Teknologi Indonesia with a GPA of 3.54. During my studies, I actively developed my skills through various projects, including web development for the Department of Tourism as my final project. I have skills in UI/UX design, data processing, as well as administrative and document management. In addition, I am used to working in a structured and detailed manner, and have good problem-solving, time management, and communication skills. I am a disciplined, thorough, adaptive person, and able to work independently or in a team to contribute professionally in the workplace.",
-        about_p2: "I am always eager to learn new things and ready to collaborate on challenging projects. My focus is on creating effective and aesthetic digital solutions.",
-        btn_cv_id: "Download CV (ID)",
-        btn_cv_en: "Download CV (EN)",
-        portfolio_title: "My <span>Works</span>",
-        proj1_desc: "Platform App Design",
-        proj2_desc: "To Do List App Design",
-        proj3_desc: "Course Platform App Design",
-        proj4_desc: "Game Top Up App Design",
-        proj5_desc: "Coffee E-commerce App Design",
-        proj6_desc: "Website Design",
-        proj7_desc: "App promotion poster",
-        proj8_desc: "Application design concept",
-        proj9_title: "Food Flyer",
-        proj9_desc: "Culinary product promotion",
-        cert_title: "Certificates",
-        cert_graphic: "Graphic Design",
-        cert_datascience: "Data Science",
-        contact_title: "Contact <span>Me</span>",
-        footer_text: "Open To Work"
-    }
-};
-
-// 2. FUNGSI GANTI BAHASA (DIPERBAIKI TOTAL)
-function changeLanguage(lang) {
-    // Simpan pilihan
-    localStorage.setItem('selectedLang', lang);
-
-    // Ubah SEMUA teks yang punya atribut data-i18n
-    document.querySelectorAll('[data-i18n]').forEach(elemen => {
-        const key = elemen.getAttribute('data-i18n');
-        if (translations[lang] && translations[lang][key]) {
-            elemen.innerHTML = translations[lang][key];
-        }
-    });
-
-    // Ubah status tombol aktif
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.getAttribute('data-lang') === lang) {
-            btn.classList.add('active');
-        }
-    });
-
-    // Ubah kode bahasa di halaman
-    document.documentElement.lang = lang;
+body {
+    background: var(--dark);
+    color: var(--primary);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
 }
 
-// 3. PASANG EVENT KLIK KE TOMBOL
-document.querySelectorAll('.lang-btn').forEach(button => {
-    button.addEventListener('click', function() {
-        // Ambil kode bahasa dari tombol yang diklik
-        const bahasa = this.getAttribute('data-lang');
-        // Panggil fungsi ganti bahasa
-        changeLanguage(bahasa);
-    });
-});
+#canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.6;
+}
 
-// 4. JALANKAN SAAT HALAMAN DIBUKA
-window.addEventListener('load', function() {
-    // Ambil bahasa yang disimpan, kalau tidak ada pakai 'id'
-    const bahasaAwal = localStorage.getItem('selectedLang') || 'id';
-    // Terapkan bahasanya
-    changeLanguage(bahasaAwal);
-});
+/* NAVBAR */
+.navbar {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 10%;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(20px);
+    z-index: 999;
+    border-bottom: 1px solid var(--border);
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary);
+    letter-spacing: 1px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+}
+
+.nav-links a {
+    color: #ccc;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 0.95rem;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--primary);
+}
+
+/* === TAMBAHAN: TOMBOL GANTI BAHASA === */
+.language-switch {
+    display: flex;
+    gap: 0.3rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.25rem;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+}
+
+.lang-btn {
+    background: transparent;
+    color: #ccc;
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-size: 0.8rem;
+}
+
+.lang-btn.active {
+    background: var(--primary);
+    color: var(--dark);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.lang-btn:hover:not(.active) {
+    color: var(--primary);
+    border: 1px solid var(--primary);
+}
+
+.menu-toggle {
+    display: none;
+    font-size: 1.5rem;
+    color: var(--primary);
+    cursor: pointer;
+}
+
+/* SECTION BERANDA */
+.beranda {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-top: 80px;
+}
+
+.profile-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-img {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid rgba(255,255,255,0.2);
+    box-shadow: 0 0 40px rgba(255,255,255,0.1);
+    margin: 0 auto;
+    background: #111;
+}
+
+.profile-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.beranda h1 {
+    font-size: 3.2rem;
+    margin-top: 2rem;
+    font-weight: 600;
+    letter-spacing: -1px;
+}
+
+.highlight {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.subtitle {
+    font-size: 1.4rem;
+    color: var(--gray);
+    margin-bottom: 2rem;
+    font-weight: 300;
+}
+
+.typing-text {
+    color: var(--primary);
+    border-right: 2px solid var(--primary);
+    padding-right: 3px;
+}
+
+.tools-section {
+    background: rgba(255,255,255,0.05);
+    padding: 1.5rem 2rem;
+    border-radius: 12px;
+    display: inline-block;
+    border: 1px solid var(--border);
+    margin-bottom: 6rem; 
+}
+
+.tools-section h3 {
+    margin-bottom: 1.5rem; 
+    color: var(--primary);
+    font-size: 1.2rem;
+}
+
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    justify-content: center;
+}
+
+.tools-grid span {
+    background: rgba(0,0,0,0.3);
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+    color: #ddd;
+    text-align: center;
+}
+
+.tools-grid span:hover {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: #000;
+    transform: translateY(-3px);
+}
+
+/* SECTION TITLE */
+.section-title {
+    text-align: left;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.section-title span {
+    color: var(--primary);
+}
+
+/* TENTANG SAYA */
+.tentang {
+    padding: 5rem 10%;
+    background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.03));
+}
+
+.tentang-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+.tentang-gambar img {
+    width: 100%;
+    max-width: 350px;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transition: transform 0.3s;
+}
+
+.tentang-gambar img:hover {
+    transform: scale(1.02);
+}
+
+.tentang-bio p {
+    line-height: 1.8;
+    color: #bbb;
+    margin-bottom: 1rem;
+    text-align: justify;
+    font-size: 1.05rem;
+    font-weight: 300;
+}
+
+.btn-group {
+    display: flex;
+    gap: 1rem; /* Jarak antar tombol */
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-top: 1rem;
+}
+
+.btn-download {
+    display: inline-block;
+    padding: 0.8rem 1.8rem;
+    background: var(--primary);
+    color: var(--dark);
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.btn-download:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(255,255,255,0.3);
+}
+
+/* PORTFOLIO */
+.portfolio {
+    padding: 5rem 10%;
+}
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+}
+
+.work-card {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    background: #111;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+}
+
+.work-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    transition: transform 0.5s;
+    opacity: 0.8;
+    display: block;
+}
+
+
+.work-info {
+    padding: 1.4rem 1.5rem; 
+    background: #111;
+    flex-grow: 1;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.work-info h4 {
+    color: var(--primary);
+    font-size: 1.1rem;
+    margin: 0 0 0.5rem 0; 
+    line-height: 1.4;
+}
+
+.work-info p {
+    color: #aaa;
+    font-size: 0.85rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+
+.work-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    border-color: var(--primary);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.6);
+}
+
+.work-card:hover img {
+    transform: scale(1.05);
+    opacity: 1;
+}
+
+/* SERTIFIKAT */
+.sertifikat {
+    padding: 5rem 10%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.03), transparent);
+}
+
+.sertifikat-slider {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.cert-item {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.02);
+}
+
+.cert-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-bottom: 1px solid var(--border);
+}
+
+.cert-info {
+    padding: 1.2rem;
+}
+
+.cert-info h4 {
+    color: var(--primary);
+    font-size: 1.05rem;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+}
+
+.cert-info p {
+    color: var(--gray);
+    font-size: 0.9rem;
+}
+
+.cert-item:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+/* KONTAK */
+.kontak {
+    padding: 5rem 10%;
+}
+
+.kontak-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    background: rgba(255,255,255,0.03);
+    padding: 3rem;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+}
+
+.kontak-foto img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    object-fit: cover;
+    object-position: center 30%;
+    display: block;
+}
+
+.kontak-info p {
+    font-size: 1.1rem;
+    margin: 0.8rem 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #bbb;
+}
+
+.kontak-info i {
+    color: var(--primary);
+    font-size: 1.3rem;
+}
+
+.sosial-media {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    justify-content: center;
+}
+
+.sosial-media a {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: all 0.3s;
+    background: transparent;
+}
+
+.sosial-media a:hover {
+    background: var(--primary);
+    color: var(--dark);
+    transform: rotate(360deg) scale(1.1);
+}
+
+footer {
+    text-align: center;
+    padding: 2rem;
+    background: var(--dark);
+    color: var(--gray);
+    border-top: 1px solid var(--border);
+    font-size: 0.9rem;
+}
+
+footer i {
+    color: var(--primary);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .nav-links {
+        position: absolute;
+        right: 0;
+        top: 100%;
+        background: rgba(0,0,0,0.95);
+        flex-direction: column;
+        width: 220px;
+        height: 100vh;
+        padding-top: 2rem;
+        transform: translateX(100%);
+        transition: transform 0.5s ease-in;
+        border-left: 1px solid var(--border);
+    }
+
+    .nav-links.active {
+        transform: translateX(0);
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .tentang-wrapper {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .tentang-bio p {
+        text-align: center;
+    }
+
+    .beranda h1 {
+        font-size: 2.3rem;
+    }
+    
+    .profile-img {
+        width: 220px;
+        height: 220px;
+    }
+    
+    .section-title {
+        font-size: 1.6rem;
+    }
+
+    .language-switch {
+        margin-right: 2.5rem;
+    }
+}
+
+/* ANIMASI SCROLL */
+.hide {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+}
+
+.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* =========================
+   PROJECT IMAGE MODAL
+========================= */
+
+.work-card {
+    cursor: pointer;
+}
+
+.work-card img {
+    transition: transform 0.3s ease;
+}
+
+.work-card:hover img {
+    transform: scale(1.03);
+}
+
+/* Background modal */
+.project-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+/* Gambar project */
+.modal-content {
+    position: relative;
+    max-width: 95%;
+    max-height: 95%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content img {
+    max-width: 100%;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Tombol close */
+.modal-close {
+    position: fixed;
+    top: 20px;
+    right: 35px;
+    color: white;
+    font-size: 42px;
+    font-weight: 300;
+    cursor: pointer;
+    z-index: 10000;
+    transition: 0.3s ease;
+}
+
+.modal-close:hover {
+    transform: scale(1.15);
+    color: #ccc;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .project-modal {
+        padding: 15px;
+    }
+
+    .modal-content img {
+        max-width: 100%;
+        max-height: 85vh;
+    }
+
+    .modal-close {
+        top: 10px;
+        right: 20px;
+        font-size: 35px;
+    }
+}
