@@ -65,6 +65,15 @@ menuToggle.addEventListener('click', () => {
     icon.classList.toggle('fa-bars');
 });
 
+//Otomatis buka tutup menu
+const navItems = document.querySelectorAll('.nav-links a');
+
+navItems.forEach(link => {
+    link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+    });
+});
+
 // ===== BAGIAN: ANIMASI SCROLL MUNCUL =====
 const observerOptions = {
     threshold: 0.1,
