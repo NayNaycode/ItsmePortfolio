@@ -720,6 +720,7 @@ footer i {
 
     .kontak-info {
         width: 100%;
+        text-align: center;
     }
 
     .kontak-info p {
@@ -812,7 +813,7 @@ footer i {
     }
 
     .kontak-box {
-        padding: 1.5rem 1rem;
+        align-items: center;
     }
 }
 
