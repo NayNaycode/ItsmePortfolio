@@ -222,7 +222,7 @@ const translations = {
         proj11_desc: "Design for the Digi Dental Clinic dental design application",
         proj12_title: "Perfume Promotional Poster",
         proj12_desc: "A design I created during a test for a perfume promotion for the local brand Good Perfume Studio, from PT Berseri Lewat Aroma",
-        proj13_titel: "Warehouse Application",
+        proj13_title: "Warehouse Application",
         proj13_desc: "Warehouse application design created as a test for Jakmall.com during the application process for the Product Design position",
         cert_title: "Certificates",
         cert_graphic: "Graphic Design",
