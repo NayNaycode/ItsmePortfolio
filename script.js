@@ -93,12 +93,15 @@
         ctx.clearRect(0, 0, width, height);
 
         const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-        let particleColor = '244, 114, 182'; // Rose Gold
-        let lineColor = '251, 113, 133';
+        let particleColor = '255, 255, 255'; // Putih (Dark Classic)
+        let lineColor = '200, 200, 200';
 
         if (currentTheme === 'light') {
-            particleColor = '219, 39, 119';
-            lineColor = '244, 114, 182';
+            particleColor = '15, 23, 42';
+            lineColor = '99, 102, 241';
+        } else if (currentTheme === 'pink') {
+            particleColor = '244, 114, 182';
+            lineColor = '251, 113, 133';
         } else if (currentTheme === 'purple') {
             particleColor = '192, 132, 252';
             lineColor = '232, 121, 249';
@@ -158,7 +161,7 @@
 
 
 // ==================================================
-// 2. KURSOR KUSTOM (BEBAS BUG POJOK KIRI ATAS)
+// 2. KURSOR KUSTOM
 // ==================================================
 document.addEventListener('DOMContentLoaded', () => {
     const follower = document.getElementById('cursor-follower');
@@ -188,19 +191,12 @@ document.addEventListener('DOMContentLoaded', () => {
 // ==================================================
 document.addEventListener('DOMContentLoaded', () => {
 
-    // A. LOGIKA SWITCH TEMA WARNA / PALET WARNA MULTI-THEME
     const themeToggleBtn = document.getElementById('theme-toggle-btn') || document.getElementById('theme-toggle');
-    const themeIcon = document.getElementById('theme-icon');
     const themeMenu = document.getElementById('theme-menu');
     const themeDots = document.querySelectorAll('.theme-dot');
 
-    // Muat tema tersimpan dari memori
     const savedTheme = localStorage.getItem('selectedTheme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
-
-    if (themeIcon) {
-        themeIcon.textContent = savedTheme === 'light' ? '☀️' : '🌙';
-    }
 
     themeDots.forEach(dot => {
         if (dot.getAttribute('data-theme-val') === savedTheme) {
@@ -210,22 +206,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Toggle Sederhana (Dark / Light Mode)
-    if (themeToggleBtn && !themeMenu) {
-        themeToggleBtn.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('selectedTheme', newTheme);
-            
-            if (themeIcon) {
-                themeIcon.textContent = newTheme === 'dark' ? '🌙' : '☀️';
-            }
-        });
-    }
-
-    // Toggle Dropdown Multi-Palet Warna (jika ada)
     if (themeToggleBtn && themeMenu) {
         themeToggleBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -252,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // B. LOGIKA NAVBAR MOBILE TOGGLE
+    // NAVBAR MOBILE TOGGLE
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
 
@@ -274,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // C. ANIMASI SCROLL REVEAL
+    // ANIMASI SCROLL REVEAL
     const observerOptions = {
         threshold: 0.1,
         rootMargin: "0px 0px -50px 0px"
@@ -294,19 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(el);
     });
 
-    // D. EFEK SCROLL PADA NAVBAR
-    window.addEventListener('scroll', () => {
-        const navbar = document.querySelector('.navbar');
-        if (navbar) {
-            if (window.scrollY > 50) {
-                navbar.style.background = 'rgba(0, 0, 0, 0.95)';
-            } else {
-                navbar.style.background = 'rgba(0, 0, 0, 0.8)';
-            }
-        }
-    });
-
-    // E. TEKS BERJALAN (TYPING EFFECT)
+    // TEKS BERJALAN (TYPING EFFECT)
     const typingElement = document.querySelector('.typing-text');
     if (typingElement) {
         const texts = ['UI/UX Designer', 'Graphic Designer', 'Admin', 'Customer Service', 'Pretty Girl🫰🏻'];
@@ -316,9 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let letter = '';
 
         (function type() {
-            if (count === texts.length) {
-                count = 0;
-            }
+            if (count === texts.length) count = 0;
             currentText = texts[count];
             letter = currentText.slice(0, ++index);
 
@@ -336,7 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // ==================================================
-// 4. LOGIKA FILTER KATEGORI PORTOFOLIO
+// 4. FILTER KATEGORI PORTOFOLIO
 // ==================================================
 document.addEventListener('DOMContentLoaded', () => {
     const filterBtns = document.querySelectorAll('.filter-btn');
@@ -366,7 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // ==================================================
-// 5. FITUR GANTI BAHASA (LENGKAP DENGAN DATA PROYEK 1-13)
+// 5. FITUR GANTI BAHASA (MULTILANGUAGE ID / EN)
 // ==================================================
 const translations = {
     id: {
@@ -385,13 +351,12 @@ const translations = {
         btn_cv_id: "Download CV (ID)",
         btn_cv_en: "Download CV (EN)",
         
-        // Filter Kategori
         filter_all: "Semua",
         filter_app: "Desain App",
         filter_web: "Desain Web",
         filter_poster: "Poster & Flyer",
 
-        portfolio_title: "Pekerjaan <span>Saya</span>",
+        portfolio_title: "Hasil <span>Karya</span>",
         proj1_title: "Design Aplikasi Entertainment",
         proj1_desc: "Desain aplikasi platform entertainment sebagai Tugas UI/UI Design pada saat MSIB di BISA AI",
         proj2_title: "Aplikasi Tudo List",
@@ -403,7 +368,7 @@ const translations = {
         proj5_title: "Aplikasi E-Commerce Kopi",
         proj5_desc: "Desain Aplikasi e-commerce kopi sebagai project akhir untuk mendapatkan sertifikasi internasional yang diselenggarakan oleh STEMSEL FOUNDATION X BISA AI",
         proj6_title: "Web Desain",
-        proj6_desc: "Desain Web bizpermit sebagai web firma hukum, design ini dikerjakan pada saat melaksanakan magang di PT Garuda Visi Nusantar",
+        proj6_desc: "Desain Web bizpermit sebagai web firma hukum, design ini dikerjakan pada saat melaksanakan magang di PT Garuda Visi Nusantara",
         proj7_title: "Poster Promosi",
         proj7_desc: "Poster promosi aplikasi top up game sebagai ajakan kepada orang-orang untuk mengunduh aplikasi tersebut, sebagai tugas desain grafis di BISA AI",
         proj8_title: "Moodboard",
@@ -411,13 +376,13 @@ const translations = {
         proj9_title: "Flyer Makanan",
         proj9_desc: "Poster promosi produk kuliner rumahan yang saya buat untuk usaha dirumah",
         proj10_title: "Design Web SPARRING",
-        proj10_desc: "Design yang dibuat untuk tes UI/UX di Suitmedia Digital Agensi (PT Suitmedia Kreasi indonesia)",
+        proj10_desc: "Design yang dibuat untuk tes UI/UX di Suitmedia Digital Agensi",
         proj11_title: "UI/UX Design Dental",
         proj11_desc: "Design untuk aplikasi desain gigi Digi Dental Klinik",
         proj12_title: "Poster Promosi Parfume",
         proj12_desc: "Design yang saya buat pada saat melakukan tes untuk promosi parfume dari brand lokal good perfume studio dari PT Berseri Lewat Aroma",
         proj13_title: "Aplikasi Warehouse",
-        proj13_desc: "Design aplikasi warehouse sebagai test dari jakmall.com posisi produk desain",
+        proj13_desc: "Design aplikasi warehouse sebagai test dari jakmall.com dengan melamar posisi Produk Desain",
         cert_title: "Sertifikat",
         cert_graphic: "Desain Grafis",
         cert_datascience: "Ilmu Data",
@@ -440,7 +405,6 @@ const translations = {
         btn_cv_id: "Download CV (ID)",
         btn_cv_en: "Download CV (EN)",
 
-        // Filter Categories
         filter_all: "All",
         filter_app: "App Design",
         filter_web: "Web Design",
@@ -466,7 +430,7 @@ const translations = {
         proj9_title: "Food Flyer",
         proj9_desc: "A promotional poster I created for a home-based culinary business",
         proj10_title: "SPARRING Web Design",
-        proj10_desc: "Design created for a UI/UX test at Suitmedia Digital Agency (PT Kreasi Indonesia)",
+        proj10_desc: "Design created for a UI/UX test at Suitmedia Digital Agency",
         proj11_title: "Dental UI/UX Design",
         proj11_desc: "Design for the Digi Dental Clinic dental design application",
         proj12_title: "Perfume Promotional Poster",
