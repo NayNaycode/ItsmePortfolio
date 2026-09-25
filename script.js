@@ -1,138 +1,373 @@
-// ===== BAGIAN: ANIMASI PARTIKEL LATAR BELAKANG =====
-const canvas = document.createElement('canvas');
-const ctx = canvas.getContext('2d');
-canvas.id = 'canvas';
-document.body.appendChild(canvas);
-
-let width, height;
-let particles = [];
-
-function resize() {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-}
-window.addEventListener('resize', resize);
-resize();
-
-class Particle {
-    constructor() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.radius = Math.random() * 2 + 1;
-        this.alpha = Math.random() * 0.5 + 0.2;
-        this.color = Math.random() > 0.5 ? '255, 255, 255' : '200, 200, 200';
+// ==================================================
+// 1. ANIMASI PARTIKEL LATAR BELAKANG (THEME AWARE)
+// ==================================================
+(function initParticleBackground() {
+    let canvas = document.getElementById('particle-canvas') || document.getElementById('canvas');
+    
+    if (!canvas) {
+        canvas = document.createElement('canvas');
+        canvas.id = 'particle-canvas';
+        document.body.prepend(canvas);
     }
-    draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${this.color}, ${this.alpha})`;
-        ctx.fill();
-    }
-    update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        if(this.x < 0 || this.x > width) this.vx *= -1;
-        if(this.y < 0 || this.y > height) this.vy *= -1;
-    }
-}
 
-for(let i = 0; i < 120; i++){
-    particles.push(new Particle());
-}
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+    let mouse = { x: null, y: null, radius: 150 };
 
-function animateParticles(){
-    ctx.clearRect(0, 0, width, height);
-    particles.forEach(p => {
-        p.update();
-        p.draw();
+    canvas.style.position = 'fixed';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.width = '100vw';
+    canvas.style.height = '100vh';
+    canvas.style.pointerEvents = 'none';
+    canvas.style.zIndex = '-1';
+
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
     });
-    requestAnimationFrame(animateParticles);
-}
-animateParticles();
 
-// ===== BAGIAN: MENU TOGGLE (UNTUK HP) =====
-const menuToggle = document.querySelector('.menu-toggle');
-const navLinks = document.querySelector('.nav-links');
-
-menuToggle.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-    const icon = menuToggle.querySelector('i');
-    icon.classList.toggle('fa-times');
-    icon.classList.toggle('fa-bars');
-});
-
-//Otomatis buka tutup menu
-const navItems = document.querySelectorAll('.nav-links a');
-
-navItems.forEach(link => {
-    link.addEventListener('click', () => {
-        navLinks.classList.remove('active');
+    window.addEventListener('mouseleave', () => {
+        mouse.x = null;
+        mouse.y = null;
     });
-});
 
-// ===== BAGIAN: ANIMASI SCROLL MUNCUL =====
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: "0px 0px -100px 0px"
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if(entry.isIntersecting){
-            entry.target.classList.add('show');
+    class Particle {
+        constructor() {
+            this.reset();
         }
-    });
-}, observerOptions);
 
-const hiddenElements = document.querySelectorAll('.work-card, .tentang-wrapper, .cert-item');
-hiddenElements.forEach(el => {
-    el.classList.add('hide');
-    observer.observe(el);
-});
+        reset() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.vx = (Math.random() - 0.5) * 1.2;
+            this.vy = (Math.random() - 0.5) * 1.2;
+            this.radius = Math.random() * 2 + 1;
+            this.baseAlpha = Math.random() * 0.5 + 0.3;
+        }
 
-// ===== BAGIAN: EFEK SCROLL PADA NAVBAR =====
-window.addEventListener('scroll', () => {
-    const navbar = document.querySelector('.navbar');
-    if(window.scrollY > 50){
-        navbar.style.background = 'rgba(3, 7, 18, 0.95)';
-    } else {
-        navbar.style.background = 'rgba(3, 7, 18, 0.9)';
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+
+            if (this.x < 0 || this.x > width) this.vx *= -1;
+            if (this.y < 0 || this.y > height) this.vy *= -1;
+
+            if (mouse.x !== null && mouse.y !== null) {
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < mouse.radius) {
+                    let force = (mouse.radius - dist) / mouse.radius;
+                    let angle = Math.atan2(dy, dx);
+                    this.x -= Math.cos(angle) * force * 2;
+                    this.y -= Math.sin(angle) * force * 2;
+                }
+            }
+        }
+
+        draw(colorRgb) {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${colorRgb}, ${this.baseAlpha})`;
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = `rgba(${colorRgb}, 0.8)`;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
     }
-});
 
-// ===== BAGIAN: TEKS BERJALAN (TYPING EFFECT) =====
-const texts = ['UI/UX Designer', 'Graphic Designer', 'Admin', 'Customer Service', 'Pretty Girl🫰🏻'];
-let count = 0;
-let index = 0;
-let currentText = '';
-let letter = '';
+    const particleCount = Math.min(85, Math.floor((window.innerWidth * window.innerHeight) / 11000));
+    particles = Array.from({ length: particleCount }, () => new Particle());
 
-(function type(){
-    if(count === texts.length){
-        count = 0;
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+        let particleColor = '244, 114, 182'; // Rose Gold
+        let lineColor = '251, 113, 133';
+
+        if (currentTheme === 'light') {
+            particleColor = '219, 39, 119';
+            lineColor = '244, 114, 182';
+        } else if (currentTheme === 'purple') {
+            particleColor = '192, 132, 252';
+            lineColor = '232, 121, 249';
+        } else if (currentTheme === 'emerald') {
+            particleColor = '253, 164, 175';
+            lineColor = '251, 146, 60';
+        } else if (currentTheme === 'sunset') {
+            particleColor = '251, 113, 133';
+            lineColor = '225, 29, 72';
+        } else if (currentTheme === 'ocean') {
+            particleColor = '56, 189, 248';
+            lineColor = '244, 114, 182';
+        }
+
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw(particleColor);
+
+            for (let j = i + 1; j < particles.length; j++) {
+                let dx = particles[i].x - particles[j].x;
+                let dy = particles[i].y - particles[j].y;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < 120) {
+                    let alpha = (1 - dist / 120) * 0.35;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.strokeStyle = `rgba(${lineColor}, ${alpha})`;
+                    ctx.lineWidth = 0.8;
+                    ctx.stroke();
+                }
+            }
+
+            if (mouse.x !== null && mouse.y !== null) {
+                let dx = particles[i].x - mouse.x;
+                let dy = particles[i].y - mouse.y;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < mouse.radius) {
+                    let alpha = (1 - dist / mouse.radius) * 0.5;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(mouse.x, mouse.y);
+                    ctx.strokeStyle = `rgba(${particleColor}, ${alpha})`;
+                    ctx.lineWidth = 1.2;
+                    ctx.stroke();
+                }
+            }
+        }
+
+        requestAnimationFrame(animate);
     }
-    currentText = texts[count];
-    letter = currentText.slice(0, ++index);
 
-    document.querySelector('.typing-text').textContent = letter;
-    if(letter.length === currentText.length){
-        count++;
-        index = 0;
-        setTimeout(type, 2000);
-    } else {
-        setTimeout(type, 100);
-    }
+    animate();
 })();
 
-// ==================================================
-// ✨ PERBAIKAN AKHIR: FITUR GANTI BAHASA ✨
-// ==================================================
 
-// 1. DATA TERJEMAHAN (LENGKAP & BENER)
+// ==================================================
+// 2. KURSOR KUSTOM (BEBAS BUG POJOK KIRI ATAS)
+// ==================================================
+document.addEventListener('DOMContentLoaded', () => {
+    const follower = document.getElementById('cursor-follower');
+    const dot = document.getElementById('cursor-dot');
+
+    if (follower && dot) {
+        window.addEventListener('mousemove', (e) => {
+            follower.style.opacity = '1';
+            dot.style.opacity = '1';
+            
+            follower.style.left = `${e.clientX}px`;
+            follower.style.top = `${e.clientY}px`;
+            dot.style.left = `${e.clientX}px`;
+            dot.style.top = `${e.clientY}px`;
+        });
+
+        window.addEventListener('mouseleave', () => {
+            follower.style.opacity = '0';
+            dot.style.opacity = '0';
+        });
+    }
+});
+
+
+// ==================================================
+// 3. FITUR UTAMA & KONTROL UI
+// ==================================================
+document.addEventListener('DOMContentLoaded', () => {
+
+    // A. LOGIKA SWITCH TEMA WARNA / PALET WARNA MULTI-THEME
+    const themeToggleBtn = document.getElementById('theme-toggle-btn') || document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const themeMenu = document.getElementById('theme-menu');
+    const themeDots = document.querySelectorAll('.theme-dot');
+
+    // Muat tema tersimpan dari memori
+    const savedTheme = localStorage.getItem('selectedTheme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+
+    if (themeIcon) {
+        themeIcon.textContent = savedTheme === 'light' ? '☀️' : '🌙';
+    }
+
+    themeDots.forEach(dot => {
+        if (dot.getAttribute('data-theme-val') === savedTheme) {
+            dot.classList.add('active');
+        } else {
+            dot.classList.remove('active');
+        }
+    });
+
+    // Toggle Sederhana (Dark / Light Mode)
+    if (themeToggleBtn && !themeMenu) {
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('selectedTheme', newTheme);
+            
+            if (themeIcon) {
+                themeIcon.textContent = newTheme === 'dark' ? '🌙' : '☀️';
+            }
+        });
+    }
+
+    // Toggle Dropdown Multi-Palet Warna (jika ada)
+    if (themeToggleBtn && themeMenu) {
+        themeToggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            themeMenu.classList.toggle('show');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!themeMenu.contains(e.target) && e.target !== themeToggleBtn) {
+                themeMenu.classList.remove('show');
+            }
+        });
+
+        themeDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const chosenTheme = dot.getAttribute('data-theme-val');
+                document.documentElement.setAttribute('data-theme', chosenTheme);
+                localStorage.setItem('selectedTheme', chosenTheme);
+
+                themeDots.forEach(d => d.classList.remove('active'));
+                dot.classList.add('active');
+
+                themeMenu.classList.remove('show');
+            });
+        });
+    }
+
+    // B. LOGIKA NAVBAR MOBILE TOGGLE
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            if (icon) {
+                icon.classList.toggle('fa-times');
+                icon.classList.toggle('fa-bars');
+            }
+        });
+
+        const navItems = document.querySelectorAll('.nav-links a');
+        navItems.forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+    }
+
+    // C. ANIMASI SCROLL REVEAL
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px"
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+            }
+        });
+    }, observerOptions);
+
+    const hiddenElements = document.querySelectorAll('.work-card, .tentang-wrapper, .cert-item, .hide');
+    hiddenElements.forEach((el) => {
+        el.classList.add('hide');
+        observer.observe(el);
+    });
+
+    // D. EFEK SCROLL PADA NAVBAR
+    window.addEventListener('scroll', () => {
+        const navbar = document.querySelector('.navbar');
+        if (navbar) {
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(0, 0, 0, 0.95)';
+            } else {
+                navbar.style.background = 'rgba(0, 0, 0, 0.8)';
+            }
+        }
+    });
+
+    // E. TEKS BERJALAN (TYPING EFFECT)
+    const typingElement = document.querySelector('.typing-text');
+    if (typingElement) {
+        const texts = ['UI/UX Designer', 'Graphic Designer', 'Admin', 'Customer Service', 'Pretty Girl🫰🏻'];
+        let count = 0;
+        let index = 0;
+        let currentText = '';
+        let letter = '';
+
+        (function type() {
+            if (count === texts.length) {
+                count = 0;
+            }
+            currentText = texts[count];
+            letter = currentText.slice(0, ++index);
+
+            typingElement.textContent = letter;
+            if (letter.length === currentText.length) {
+                count++;
+                index = 0;
+                setTimeout(type, 2000);
+            } else {
+                setTimeout(type, 100);
+            }
+        })();
+    }
+});
+
+
+// ==================================================
+// 4. LOGIKA FILTER KATEGORI PORTOFOLIO
+// ==================================================
+document.addEventListener('DOMContentLoaded', () => {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const workCards = document.querySelectorAll('.work-card');
+
+    if (filterBtns.length > 0 && workCards.length > 0) {
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const selectedCategory = btn.getAttribute('data-filter');
+
+                workCards.forEach(card => {
+                    const cardCategory = card.getAttribute('data-category');
+
+                    if (selectedCategory === 'all' || cardCategory === selectedCategory) {
+                        card.classList.remove('hide-card');
+                    } else {
+                        card.classList.add('hide-card');
+                    }
+                });
+            });
+        });
+    }
+});
+
+
+// ==================================================
+// 5. FITUR GANTI BAHASA (LENGKAP DENGAN DATA PROYEK 1-13)
+// ==================================================
 const translations = {
     id: {
         nav_home: "Beranda",
@@ -144,11 +379,18 @@ const translations = {
         hero_intro: "Saya Seorang",
         skills_title: "Keahlian & Alat",
         about_title: "Tentang <span>Saya</span>",
-        about_p1:"Halo, Saya Sri Mulyani!👋",
+        about_p1: "Halo, Saya Sri Mulyani!👋",
         about_p2: "Saya seorang lulusan Teknik Informatika (S.Kom) yang fleksibel, berorientasi pada detail, dan siap berkontribusi di berbagai bidang kerja. Memiliki perpaduan keahlian yang lengkap: dari pemahaman teknologi & pengembangan web, perancangan antarmuka (UI/UX design), pengelolaan administrasi & data, hingga pengalaman langsung dalam pelayanan publik (customer support).",
         about_p3: "Terbiasa berpikir logis, bekerja terstruktur, serta memiliki kemampuan komunikasi dan empati yang baik. Saya selalu antusias untuk belajar hal baru dan siap memberikan solusi terbaik di lingkungan kerja yang dinamis.",
         btn_cv_id: "Download CV (ID)",
         btn_cv_en: "Download CV (EN)",
+        
+        // Filter Kategori
+        filter_all: "Semua",
+        filter_app: "Desain App",
+        filter_web: "Desain Web",
+        filter_poster: "Poster & Flyer",
+
         portfolio_title: "Pekerjaan <span>Saya</span>",
         proj1_title: "Design Aplikasi Entertainment",
         proj1_desc: "Desain aplikasi platform entertainment sebagai Tugas UI/UI Design pada saat MSIB di BISA AI",
@@ -174,8 +416,8 @@ const translations = {
         proj11_desc: "Design untuk aplikasi desain gigi Digi Dental Klinik",
         proj12_title: "Poster Promosi Parfume",
         proj12_desc: "Design yang saya buat pada saat melakukan tes untuk promosi parfume dari brand lokal good perfume studio dari PT Berseri Lewat Aroma",
-        proj13_title:"Aplikasi Warehouse",
-        proj13_desc:"Design aplikasi warehouse sebagai test dari jakmall.com posisi produk desain",
+        proj13_title: "Aplikasi Warehouse",
+        proj13_desc: "Design aplikasi warehouse sebagai test dari jakmall.com posisi produk desain",
         cert_title: "Sertifikat",
         cert_graphic: "Desain Grafis",
         cert_datascience: "Ilmu Data",
@@ -197,6 +439,13 @@ const translations = {
         about_p3: "I am accustomed to logical thinking, structured workflows, and strong empathetic communication. Always eager to learn new things, I am ready to deliver optimal solutions in dynamic work environments.",
         btn_cv_id: "Download CV (ID)",
         btn_cv_en: "Download CV (EN)",
+
+        // Filter Categories
+        filter_all: "All",
+        filter_app: "App Design",
+        filter_web: "Web Design",
+        filter_poster: "Posters & Flyers",
+
         portfolio_title: "My <span>Works</span>",
         proj1_title: "Entertainment App Design",
         proj1_desc: "Entertainment platform app design created as a UI/UX design assignment during the MSIB program at BISA AI",
@@ -232,12 +481,9 @@ const translations = {
     }
 };
 
-// 2. FUNGSI GANTI BAHASA (DIPERBAIKI TOTAL)
 function changeLanguage(lang) {
-    // Simpan pilihan
     localStorage.setItem('selectedLang', lang);
 
-    // Ubah SEMUA teks yang punya atribut data-i18n
     document.querySelectorAll('[data-i18n]').forEach(elemen => {
         const key = elemen.getAttribute('data-i18n');
         if (translations[lang] && translations[lang][key]) {
@@ -245,7 +491,6 @@ function changeLanguage(lang) {
         }
     });
 
-    // Ubah status tombol aktif
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.classList.remove('active');
         if (btn.getAttribute('data-lang') === lang) {
@@ -253,58 +498,53 @@ function changeLanguage(lang) {
         }
     });
 
-    // Ubah kode bahasa di halaman
     document.documentElement.lang = lang;
 }
 
-// 3. PASANG EVENT KLIK KE TOMBOL
 document.querySelectorAll('.lang-btn').forEach(button => {
     button.addEventListener('click', function() {
-        // Ambil kode bahasa dari tombol yang diklik
         const bahasa = this.getAttribute('data-lang');
-        // Panggil fungsi ganti bahasa
         changeLanguage(bahasa);
     });
 });
 
-// 4. JALANKAN SAAT HALAMAN DIBUKA
 window.addEventListener('load', function() {
-    // Ambil bahasa yang disimpan, kalau tidak ada pakai 'id'
     const bahasaAwal = localStorage.getItem('selectedLang') || 'id';
-    // Terapkan bahasanya
     changeLanguage(bahasaAwal);
 });
 
-// =========================
-// PROJECT IMAGE MODAL
-// =========================
 
+// ==================================================
+// 6. MODAL PRATINJAU GAMBAR PROJECT
+// ==================================================
 function openProject(imageSrc) {
     const modal = document.getElementById("projectModal");
     const image = document.getElementById("projectImage");
 
-    image.src = imageSrc;
-    modal.style.display = "flex";
-
-    document.body.style.overflow = "hidden";
+    if (modal && image) {
+        image.src = imageSrc;
+        modal.style.display = "flex";
+        document.body.style.overflow = "hidden";
+    }
 }
 
 function closeProject() {
     const modal = document.getElementById("projectModal");
-
-    modal.style.display = "none";
-
-    document.body.style.overflow = "";
+    if (modal) {
+        modal.style.display = "none";
+        document.body.style.overflow = "";
+    }
 }
 
-// Klik area hitam untuk menutup
-document.getElementById("projectModal").addEventListener("click", function(event) {
-    if (event.target === this) {
-        closeProject();
-    }
-});
+const projectModalEl = document.getElementById("projectModal");
+if (projectModalEl) {
+    projectModalEl.addEventListener("click", function(event) {
+        if (event.target === this) {
+            closeProject();
+        }
+    });
+}
 
-// Tekan tombol ESC untuk menutup
 document.addEventListener("keydown", function(event) {
     if (event.key === "Escape") {
         closeProject();
