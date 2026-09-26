@@ -93,7 +93,7 @@
         ctx.clearRect(0, 0, width, height);
 
         const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-        let particleColor = '255, 255, 255'; // Putih (Dark Classic)
+        let particleColor = '255, 255, 255'; 
         let lineColor = '200, 200, 200';
 
         if (currentTheme === 'light') {
@@ -187,7 +187,76 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // ==================================================
-// 3. FITUR UTAMA & KONTROL UI
+// 3. SCROLL PROGRESS BAR & BACK TO TOP BUTTON
+// ==================================================
+window.addEventListener('scroll', () => {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    const progressBar = document.getElementById('scroll-progress');
+    if (progressBar) progressBar.style.width = scrolled + '%';
+
+    const backToTopBtn = document.getElementById('back-to-top');
+    if (backToTopBtn) {
+        if (winScroll > 300) {
+            backToTopBtn.classList.add('show');
+        } else {
+            backToTopBtn.classList.remove('show');
+        }
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const backToTopBtn = document.getElementById('back-to-top');
+    if (backToTopBtn) {
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+});
+
+
+// ==================================================
+// 4. ANIMASI ANGKA STATISTIK (COUNTER STATS)
+// ==================================================
+document.addEventListener('DOMContentLoaded', () => {
+    const statNumbers = document.querySelectorAll('.stat-number');
+    let animated = false;
+
+    function startCounter() {
+        statNumbers.forEach(stat => {
+            const target = +stat.getAttribute('data-target');
+            let count = 0;
+            const speed = target / 30;
+
+            const updateCount = () => {
+                count += speed;
+                if (count < target) {
+                    stat.innerText = Math.ceil(count) + '+';
+                    setTimeout(updateCount, 40);
+                } else {
+                    stat.innerText = target + '+';
+                }
+            };
+            updateCount();
+        });
+    }
+
+    const statsContainer = document.querySelector('.stats-container');
+    if (statsContainer) {
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && !animated) {
+                animated = true;
+                startCounter();
+            }
+        }, { threshold: 0.5 });
+        observer.observe(statsContainer);
+    }
+});
+
+
+// ==================================================
+// 5. FITUR UTAMA & KONTROL UI
 // ==================================================
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -268,7 +337,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, observerOptions);
 
-    const hiddenElements = document.querySelectorAll('.work-card, .tentang-wrapper, .cert-item, .hide');
+    const hiddenElements = document.querySelectorAll('.work-card, .tentang-wrapper, .cert-item, .timeline-item, .quick-connect-card, .hide');
     hiddenElements.forEach((el) => {
         el.classList.add('hide');
         observer.observe(el);
@@ -302,7 +371,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // ==================================================
-// 4. FILTER KATEGORI PORTOFOLIO
+// 6. FILTER KATEGORI PORTOFOLIO
 // ==================================================
 document.addEventListener('DOMContentLoaded', () => {
     const filterBtns = document.querySelectorAll('.filter-btn');
@@ -332,24 +401,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // ==================================================
-// 5. FITUR GANTI BAHASA (MULTILANGUAGE ID / EN)
+// 7. FITUR GANTI BAHASA (MULTILANGUAGE ID / EN)
 // ==================================================
 const translations = {
     id: {
         nav_home: "Beranda",
         nav_about: "Tentang Saya",
+        nav_experience: "Pengalaman",
         nav_portfolio: "Portofolio",
         nav_certificates: "Sertifikat",
         nav_contact: "Kontak",
         hero_greeting: "Halo, Saya <span class='highlight'>Sri Mulyani</span>",
         hero_intro: "Saya Seorang",
         skills_title: "Keahlian & Alat",
+        
+        stats_projects: "Proyek Desain",
+        stats_certs: "Sertifikat",
+        stats_gpa: "IPK Informatika",
+
         about_title: "Tentang <span>Saya</span>",
         about_p1: "Halo, Saya Sri Mulyani!👋",
         about_p2: "Saya seorang lulusan Teknik Informatika (S.Kom) yang fleksibel, berorientasi pada detail, dan siap berkontribusi di berbagai bidang kerja. Memiliki perpaduan keahlian yang lengkap: dari pemahaman teknologi & pengembangan web, perancangan antarmuka (UI/UX design), pengelolaan administrasi & data, hingga pengalaman langsung dalam pelayanan publik (customer support).",
         about_p3: "Terbiasa berpikir logis, bekerja terstruktur, serta memiliki kemampuan komunikasi dan empati yang baik. Saya selalu antusias untuk belajar hal baru dan siap memberikan solusi terbaik di lingkungan kerja yang dinamis.",
         btn_cv_id: "Download CV (ID)",
         btn_cv_en: "Download CV (EN)",
+
+        exp_title: "Pengalaman & <span>Pendidikan</span>",
+        exp_edu_title: "S1 Teknik Informatika (S.Kom)",
+        exp_sub_iti: "Institut Teknologi Indonesia (IPK 3.54)",
+        exp_edu_desc: "Rancang Bangun Sistem Informasi Pariwisata Berbasis Web Sebagai Media Promosi: Studi Kasus Di Kabupaten Oku Selatan sebagai Tugas Akhir, aktif mempelajari UI/UX Design, basis data, pengembangan web/mobile, dan lainnya.",
+        exp_work1_title: "UI/UX Designer Intern",
+        exp_sub_gvn: "PT Garuda Visi Nusantara",
+        exp_work1_desc: "Merancang antarmuka website yang fungsional, responsif, dan modern dengan pendekatan User Experience (UX). Bertanggung jawab atas pembuatan user flow, struktur sistem, hingga prototype interaktif, serta berkolaborasi dengan tim untuk penyempurnaan desain. ",
+        exp_sub_galang: "Kantor Desa Galang Tinggi",
+        timeline_work2_title: "Kantor Desa Galang Tinggi",
+        exp_work2_desc: "Bertanggung jawab atas pengelolaan dokumen dan pelayanan administrasi masyarakat secara efektif, akurat, dan tepat waktu. Berperan aktif dalam verifikasi data, koordinasi lintas pihak (perangkat desa & warga), serta penataan sistem kearsipan dokumen untuk kemudahan aksesibilitas data.",
         
         filter_all: "Semua",
         filter_app: "Desain App",
@@ -383,27 +469,52 @@ const translations = {
         proj12_desc: "Design yang saya buat pada saat melakukan tes untuk promosi parfume dari brand lokal good perfume studio dari PT Berseri Lewat Aroma",
         proj13_title: "Aplikasi Warehouse",
         proj13_desc: "Design aplikasi warehouse sebagai test dari jakmall.com dengan melamar posisi Produk Desain",
+        
         cert_title: "Sertifikat",
         cert_graphic: "Desain Grafis",
         cert_datascience: "Ilmu Data",
+        
         contact_title: "Hubungi <span>Saya</span>",
+        contact_status: "Terbuka Untuk Kesempatan Kerja",
+        contact_cta_title: "Mari Terhubung & Bekerja Sama!",
+        contact_cta_desc: "Apakah Anda memiliki tawaran pekerjaan, proyek UI/UX, atau ingin berdiskusi? Jangan ragu untuk menghubungi saya melalui akses cepat di bawah ini.",
+        contact_wa_btn: "Chat via WhatsApp",
+        contact_email_btn: "Kirim Email Direct",
+        contact_linkedin_btn: "Pesan via LinkedIn",
         footer_text: "Terbuka Untuk Bekerja"
     },
     en: {
         nav_home: "Home",
         nav_about: "About Me",
+        nav_experience: "Experience",
         nav_portfolio: "Portfolio",
         nav_certificates: "Certificates",
         nav_contact: "Contact",
         hero_greeting: "Hello, I'm <span class='highlight'>Sri Mulyani</span>",
         hero_intro: "I am a",
         skills_title: "Skills & Tools",
+
+        stats_projects: "Design Projects",
+        stats_certs: "Certificates",
+        stats_gpa: "Informatics GPA",
+
         about_title: "About <span>Me</span>",
         about_p1: "Hello, I'm Sri Mulyani!👋",
         about_p2: "I am a Computer Science graduate (B.S.) who is adaptable, detail-oriented, and ready to contribute across various professional fields. I bring a well-rounded skillset: spanning from technology & web development to UI/UX design, data & administrative management, and direct hands-on experience in public service & customer support.",
         about_p3: "I am accustomed to logical thinking, structured workflows, and strong empathetic communication. Always eager to learn new things, I am ready to deliver optimal solutions in dynamic work environments.",
         btn_cv_id: "Download CV (ID)",
         btn_cv_en: "Download CV (EN)",
+
+        exp_title: "Experience & <span>Education</span>",
+        exp_edu_title: "B.S. in Computer Science",
+        exp_sub_iti: "Institute of Technology Indonesia (GPA 3.54)",
+        exp_edu_desc: "Designed and developed a web-based tourism information system as a promotional tool—a case study in South OKU Regency undertaken as a final project—while actively studying UI/UX design, databases, web and mobile development, and related areas.",
+        exp_work1_title: "UI/UX Designer Intern",
+        exp_sub_gvn: "PT Garuda Visi Nusantara",
+        exp_work1_desc: "Designed functional, responsive, and modern website interfaces using a User Experience (UX) approach. Responsible for creating user flows, system architectures, and interactive prototypes, as well as collaborating with cross-functional teams to refine design solutions.",
+        exp_work2_title: "Village Administration Assistant",
+        exp_sub_galang: "Galang Tinggi Village Office",
+        exp_work2_desc: "Responsible for managing public administrative documents efficiently, accurately, and on schedule. Played an active role in data verification, cross-stakeholder coordination (village officials and local residents), and structuring the document archiving system to ensure seamless data accessibility.",
 
         filter_all: "All",
         filter_app: "App Design",
@@ -437,10 +548,18 @@ const translations = {
         proj12_desc: "A design I created during a test for a perfume promotion for the local brand Good Perfume Studio, from PT Berseri Lewat Aroma",
         proj13_title: "Warehouse Application",
         proj13_desc: "Warehouse application design created as a test for Jakmall.com during the application process for the Product Design position",
+        
         cert_title: "Certificates",
         cert_graphic: "Graphic Design",
         cert_datascience: "Data Science",
+        
         contact_title: "Contact <span>Me</span>",
+        contact_status: "Open for Work Opportunities",
+        contact_cta_title: "Let's Connect & Collaborate!",
+        contact_cta_desc: "Do you have job offers, UI/UX project inquiries, or want to discuss opportunities? Feel free to reach out directly using the options below.",
+        contact_wa_btn: "Chat via WhatsApp",
+        contact_email_btn: "Send Direct Email",
+        contact_linkedin_btn: "Message via LinkedIn",
         footer_text: "Open To Work"
     }
 };
@@ -479,7 +598,7 @@ window.addEventListener('load', function() {
 
 
 // ==================================================
-// 6. MODAL PRATINJAU GAMBAR PROJECT
+// 8. MODAL PRATINJAU GAMBAR PROJECT
 // ==================================================
 function openProject(imageSrc) {
     const modal = document.getElementById("projectModal");
