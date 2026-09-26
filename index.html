@@ -9,6 +9,9 @@
 </head>
 <body class="min-h-screen relative overflow-x-hidden selection:bg-accent selection:text-white">
 
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress-bar" id="scroll-progress"></div>
+
     <!-- Interactive Background Blobs & Canvas -->
     <div class="bg-blobs">
         <div class="blob blob-1"></div>
@@ -30,6 +33,7 @@
             <ul class="nav-links">
                 <li><a href="#beranda" data-i18n="nav_home">Home</a></li>
                 <li><a href="#tentang" data-i18n="nav_about">About Me</a></li>
+                <li><a href="#pengalaman" data-i18n="nav_experience">Pengalaman</a></li>
                 <li><a href="#portfolio" data-i18n="nav_portfolio">Portfolio</a></li>
                 <li><a href="#sertifikat" data-i18n="nav_certificates">Certificates</a></li>
                 <li><a href="#kontak" data-i18n="nav_contact">Contact</a></li>
@@ -86,6 +90,22 @@
                     <h1 data-i18n="hero_greeting">Halo, Saya <span class="highlight">Sri Mulyani</span></h1>
                     <p class="subtitle"><span data-i18n="hero_intro">Saya Seorang</span> <span class="typing-text">UI/UX Designer</span></p>
                     
+                    <!-- FITUR STATS COUNTER -->
+                    <div class="stats-container">
+                        <div class="stat-box">
+                            <h3 class="stat-number" data-target="13">0</h3>
+                            <p data-i18n="stats_projects">Proyek Desain</p>
+                        </div>
+                        <div class="stat-box">
+                            <h3 class="stat-number" data-target="9">0</h3>
+                            <p data-i18n="stats_certs">Sertifikat</p>
+                        </div>
+                        <div class="stat-box">
+                            <h3 class="stat-number-fixed">3.54</h3>
+                            <p data-i18n="stats_gpa">IPK Informatika</p>
+                        </div>
+                    </div>
+
                     <div class="tools-section">
                         <h3 data-i18n="skills_title">Skills & Tools</h3>
                         <div class="tools-grid">
@@ -135,6 +155,44 @@
                             <a href="Sri Mulyani's Resume.pdf" class="btn-download" download>
                                 <i class="fas fa-download"></i> <span data-i18n="btn_cv_en">Download CV (EN)</span>
                             </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION PENGALAMAN & PENDIDIKAN (TIMELINE) -->
+        <section id="pengalaman" class="pengalaman">
+            <div class="container">
+                <h2 class="section-title" data-i18n="exp_title">Pengalaman & <span>Pendidikan</span></h2>
+                <div class="timeline">
+                    <div class="timeline-item left">
+                        <div class="timeline-dot-icon"><i class="fas fa-graduation-cap"></i></div>
+                        <div class="timeline-content">
+                            <span class="timeline-date">2021 - 2025</span>
+                            <h4 data-i18n="exp_edu_title">S1 Teknik Informatika (S.Kom)</h4>
+                            <p class="timeline-sub" data-i18n="exp_sub_iti">Institut Teknologi Indonesia (IPK 3.54)</p>
+                            <p data-i18n="exp_edu_desc">Rancang Bangun Sistem Informasi Pariwisata Berbasis Web Sebagai Media Promosi: Studi Kasus Di Kabupaten Oku Selatan sebagai Tugas Akhir, aktif mempelajari UI/UX Design, basis data, pengembangan web/mobile, dan lainnya.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item right">
+                        <div class="timeline-dot-icon"><i class="fas fa-briefcase"></i></div>
+                        <div class="timeline-content">
+                            <span class="timeline-date">2023 - 2024</span>
+                            <h4 data-i18n="exp_work1_title">UI/UX Designer Intern</h4>
+                            <p class="timeline-sub" data-i18n="exp_sub_gvn">PT Garuda Visi Nusantara</p>
+                            <p data-i18n="exp_work1_desc">Merancang antarmuka website yang fungsional, responsif, dan modern dengan pendekatan User Experience (UX). Bertanggung jawab atas pembuatan user flow, struktur sistem, hingga prototype interaktif, serta berkolaborasi dengan tim untuk penyempurnaan desain. </p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item left">
+                        <div class="timeline-dot-icon"><i class="fas fa-user-check"></i></div>
+                        <div class="timeline-content">
+                            <span class="timeline-date">2022 - 2023</span>
+                            <h4 data-i18n="exp_work2_title">Asisten Administrasi Desa</h4>
+                            <p class="timeline-sub" data-i18n="exp_sub_galang">Kantor Desa Galang Tinggi</p>
+                            <p data-i18n="exp_work2_desc">Bertanggung jawab atas pengelolaan dokumen dan pelayanan administrasi masyarakat secara efektif, akurat, dan tepat waktu. Berperan aktif dalam verifikasi data, koordinasi lintas pihak (perangkat desa & warga), serta penataan sistem kearsipan dokumen untuk kemudahan aksesibilitas data.</p>
                         </div>
                     </div>
                 </div>
@@ -338,20 +396,46 @@
         <section id="kontak" class="kontak">
             <div class="container">
                 <h2 class="section-title" data-i18n="contact_title">Hubungi <span>Saya</span></h2>
-                <div class="kontak-box">
-                    <div class="kontak-foto">
-                        <img src="images/Photo Setengah Badan.jpg" alt="Foto">
+                
+                <div class="kontak-wrapper">
+                    <!-- Kartu Informasi Kontak Diri -->
+                    <div class="kontak-box">
+                        <div class="kontak-foto">
+                            <img src="images/Photo Setengah Badan.jpg" alt="Foto">
+                        </div>
+                        <div class="kontak-info">
+                            <p><i class="fas fa-envelope"></i> srimulyani.me04@gmail.com</p>
+                            <p><i class="fas fa-phone"></i> +62 852 6311 7213</p>
+                            <p><i class="fas fa-map-marker-alt"></i> Kota Tangerang Selatan, Banten</p>
+                            
+                            <div class="sosial-media">
+                                <a href="https://linkedin.com/in/srimulyaniskom" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="https://www.facebook.com/Koka5kSri.M" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                                <a href="https://www.instagram.com/slmaoo_4?igsh=cDk2b3Y3NjBpYWMz" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                                <a href="https://pin.it/3iz5Qx7GB" target="_blank" title="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="kontak-info">
-                        <p><i class="fas fa-envelope"></i> srimulyani.me04@gmail.com</p>
-                        <p><i class="fas fa-phone"></i> +62 852 6311 7213</p>
-                        <p><i class="fas fa-map-marker-alt"></i> Kota Tangerang Selatan, Banten</p>
+
+                    <!-- Kartu Akses Cepat Kontak -->
+                    <div class="quick-connect-card">
+                        <div class="status-badge">
+                            <span class="status-dot"></span>
+                            <span data-i18n="contact_status">Terbuka Untuk Kesempatan Kerja</span>
+                        </div>
+                        <h3 data-i18n="contact_cta_title">Mari Terhubung & Bekerja Sama!</h3>
+                        <p data-i18n="contact_cta_desc">Apakah Anda memiliki tawaran pekerjaan, proyek UI/UX, atau ingin berdiskusi? Jangan ragu untuk menghubungi saya melalui akses cepat di bawah ini.</p>
                         
-                        <div class="sosial-media">
-                            <a href="https://linkedin.com/in/srimulyaniskom" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="https://www.facebook.com/Koka5kSri.M" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                            <a href="https://www.instagram.com/slmaoo_4?igsh=cDk2b3Y3NjBpYWMz" target="_blank"><i class="fab fa-instagram"></i></a>
-                            <a href="https://pin.it/3iz5Qx7GB" target="_blank"><i class="fab fa-pinterest-p"></i></a>
+                        <div class="quick-btn-group">
+                            <a href="https://wa.me/6285263117213?text=Halo%20Sri%20Mulyani,%20saya%20melihat%20portofolio%20Anda%20dan%20tertarik%20untuk%20berdiskusi." target="_blank" class="quick-btn wa-btn">
+                                <i class="fab fa-whatsapp"></i> <span data-i18n="contact_wa_btn">Chat via WhatsApp</span>
+                            </a>
+                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=srimulyani.me04@gmail.com&su=Tawaran%20Kerja%20/%20Diskusi%20Proyek" target="_blank" class="quick-btn email-btn">
+                                <i class="fas fa-envelope"></i> <span data-i18n="contact_email_btn">Kirim Email Direct</span>
+                            </a>
+                            <a href="https://linkedin.com/in/srimulyaniskom" target="_blank" class="quick-btn linkedin-btn">
+                                <i class="fab fa-linkedin-in"></i> <span data-i18n="contact_linkedin_btn">Pesan via LinkedIn</span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -362,6 +446,11 @@
     <footer>
         <p>&copy; 2026 Designed with <i class="fas fa-heart"></i> <span data-i18n="footer_text">Terbuka Untuk Bekerja</span></p>
     </footer>
+
+    <!-- BACK TO TOP BUTTON ONLY -->
+    <button id="back-to-top" class="back-to-top-btn" title="Kembali ke Atas">
+        <i class="fas fa-chevron-up"></i>
+    </button>
 
     <!-- PROJECT IMAGE MODAL -->
     <div id="projectModal" class="project-modal">
